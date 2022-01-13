@@ -38,7 +38,7 @@ export default function Router() {
         { path: '*', element: <Navigate to="/404" /> }
       ]
     },
-    { path: 'api/*'},
+    { path: 'api/:params', element: <Navigate to="api/:params" replace />},
     { path: '*', element: <Navigate to="/404" replace /> }
   ]);
 }

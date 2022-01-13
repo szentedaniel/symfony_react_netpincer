@@ -24,7 +24,7 @@ class AuthController extends AbstractController
     {
     }
 
-    #[Route('/register', name: 'auth')]
+    #[Route('/register', name: 'auth', methods: ['POST', 'HEAD'])]
     public function register(Request $request ): JsonResponse
     {
         $jsonData = json_decode($request->getContent());
@@ -32,7 +32,14 @@ class AuthController extends AbstractController
         $user = $this->userRepository->create($jsonData);
 
         return new JsonResponse([
-            'user' => $this->serializer->serialize($user, 'json')
+            'message' => 'success',
+            'user' => [
+                'name' => $user->getName(),
+                'email' => $user->getEmail(),
+                'roles' => $user->getRoles(),
+                'updated_at' => $user->getUpdatedAt(),
+                'created_at' => $user->getUpdatedAt()
+            ],
         ]);
     }
 }

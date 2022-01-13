@@ -9,6 +9,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 use function Symfony\Component\Translation\t;
 
 /**
@@ -41,13 +42,23 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    public function create($data){
+    public function create($data): User
+    {
+        $now = time(); //current time stamp
+        $date = new \DateTime();
+        $date->setTimeStamp($now);
+
         $user = new User();
-        $user->setName($data->name);
         $user->setEmail($data->email);
+        $user->setRoles(['ROLE_USER']);
 
         $password = $this->passwordHasher->hashPassword($user, $data->password);
+
         $user->setPassword($password);
+        $user->setName($data->name);
+        $user->setUpdatedAt($date);
+        $user->setCreatedAt($date);
+
 
         $this->_em->persist($user);
         $this->_em->flush();
