@@ -28,6 +28,13 @@ class Kategoriak
      */
     private $kategoria;
 
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="parent_id", type="integer", nullable=true)
+     */
+    private $parentId;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -41,6 +48,18 @@ class Kategoriak
     public function setKategoria(string $kategoria): self
     {
         $this->kategoria = $kategoria;
+
+        return $this;
+    }
+
+    public function getParentId(): ?int
+    {
+        return $this->parentId;
+    }
+
+    public function setParentId(?int $parentId): self
+    {
+        $this->parentId = $parentId;
 
         return $this;
     }

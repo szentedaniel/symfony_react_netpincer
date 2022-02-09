@@ -22,13 +22,6 @@ class Termekek
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="etel_neve", type="string", length=255, nullable=false)
-     */
-    private $etelNeve;
-
-    /**
      * @var float
      *
      * @ORM\Column(name="ar_forint", type="float", precision=10, scale=0, nullable=false)
@@ -43,18 +36,11 @@ class Termekek
     private $arEuro;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="mennyiség", type="string", length=45, nullable=false)
-     */
-    private $mennyiség;
-
-    /**
      * @var string|null
      *
-     * @ORM\Column(name="etel_leiras", type="string", length=255, nullable=true)
+     * @ORM\Column(name="mennyiség", type="string", length=45, nullable=true)
      */
-    private $etelLeiras;
+    private $mennyiség;
 
     /**
      * @var string|null
@@ -95,18 +81,6 @@ class Termekek
         return $this->id;
     }
 
-    public function getEtelNeve(): ?string
-    {
-        return $this->etelNeve;
-    }
-
-    public function setEtelNeve(string $etelNeve): self
-    {
-        $this->etelNeve = $etelNeve;
-
-        return $this;
-    }
-
     public function getArForint(): ?float
     {
         return $this->arForint;
@@ -136,21 +110,9 @@ class Termekek
         return $this->mennyiség;
     }
 
-    public function setMennyiség(string $mennyiség): self
+    public function setMennyiség(?string $mennyiség): self
     {
         $this->mennyiség = $mennyiség;
-
-        return $this;
-    }
-
-    public function getEtelLeiras(): ?string
-    {
-        return $this->etelLeiras;
-    }
-
-    public function setEtelLeiras(?string $etelLeiras): self
-    {
-        $this->etelLeiras = $etelLeiras;
 
         return $this;
     }

@@ -120,6 +120,7 @@ CREATE TABLE `kategoriak`
 (
  `id`        int NOT NULL AUTO_INCREMENT ,
  `kategoria` varchar(255) NOT NULL ,
+ `szulo_kategoria_id` int NULL ,
 
 PRIMARY KEY (`id`)
 );
@@ -186,11 +187,9 @@ CREATE TABLE `termekek`
  `id`           int NOT NULL AUTO_INCREMENT ,
  `etterem_id`   int NOT NULL ,
  `kategoria_id` int NULL ,
- `etel_neve`    varchar(255) NOT NULL ,
  `ar_forint`    double NOT NULL ,
  `ar_euro`      double NULL ,
- `mennyiség`    varchar(45) NOT NULL ,
- `etel_leiras`  varchar(255) NULL ,
+ `mennyiség`    varchar(45) NULL ,
  `img_path`     varchar(255) NULL ,
  `elerheto`     int NOT NULL ,
 
@@ -223,6 +222,32 @@ CREATE TABLE `user`
 
 PRIMARY KEY (`id`)
 );
+
+-- ************************************** `etterem_nyelv`
+
+CREATE TABLE `etterem_nyelv`
+(
+ `kod`        varchar(2) NOT NULL ,
+ `etterem_id` int NOT NULL ,
+ `nyelv`      varchar(45) NOT NULL ,
+
+PRIMARY KEY (`kod`)
+);
+
+
+-- ************************************** `termekek_fordito`
+
+CREATE TABLE `termekek_fordito`
+(
+ `id`            int NOT NULL AUTO_INCREMENT ,
+ `termek_id`     int NOT NULL ,
+ `nyelv_kod`     varchar(2) NOT NULL ,
+ `termek_nev`    varchar(45) NULL ,
+ `termek_leiras` varchar(255) NULL ,
+
+PRIMARY KEY (`id`)
+);
+
 
 -- CONSTRAINTS --
 
@@ -350,6 +375,30 @@ ALTER TABLE `termekek_allergenek_rend`
 ALTER TABLE `user` 
  ADD KEY `FK_user_etteremId_ettermek` (`etterem_id`),
  ADD CONSTRAINT `FK_user_etteremId_ettermek` FOREIGN KEY `FK_user_etteremId_ettermek` (`etterem_id`) REFERENCES `ettermek` (`id`);
+ 
+ -- ************************************** `termekek_fordito`
+
+
+-- SKIP Index: `PK_297`
+
+ALTER TABLE `termekek_fordito` 
+ ADD KEY `FK_312` (`termek_id`),
+ ADD CONSTRAINT `FK_310` FOREIGN KEY `FK_312` (`termek_id`) REFERENCES `termekek` (`id`);
+
+ALTER TABLE `termekek_fordito` 
+ ADD KEY `FK_322` (`nyelv_kod`),
+ ADD CONSTRAINT `FK_320` FOREIGN KEY `FK_322` (`nyelv_kod`) REFERENCES `etterem_nyelv` (`kod`);
+
+-- ************************************** `etterem_nyelv`
+
+
+-- SKIP Index: `PK_315`
+
+ALTER TABLE `etterem_nyelv` 
+ ADD KEY `FK_319` (`etterem_id`),
+ ADD CONSTRAINT `FK_317` FOREIGN KEY `FK_319` (`etterem_id`) REFERENCES `ettermek` (`id`);
+
+
 
 -- fill city_zip --
 INSERT INTO `city_zip` VALUES 
