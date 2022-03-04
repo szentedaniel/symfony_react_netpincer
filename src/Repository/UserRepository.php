@@ -5,11 +5,14 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use http\Exception\UnexpectedValueException;
+use PHPUnit\Util\Exception;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
+use function PHPUnit\Framework\throwException;
 use function Symfony\Component\Translation\t;
 
 /**
@@ -42,28 +45,40 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    public function create($data): User
+    public function create($data): ?User
     {
-        $now = time(); //current time stamp
-        $date = new \DateTime();
-        $date->setTimeStamp($now);
+        try {
 
-        $user = new User();
-        $user->setEmail($data->email);
-        $user->setRoles(['ROLE_USER']);
+            $now = time(); //current time stamp
+            $date = new \DateTime();
+            $date->setTimeStamp($now);
 
-        $password = $this->passwordHasher->hashPassword($user, $data->password);
+            $user = new User();
+            $user->setEmail($data->email);
+            if (isset($data->role)) {
+                $user->setRoles($data->role);
+            } else { $user->setRoles('user');}
 
-        $user->setPassword($password);
-        $user->setName($data->name);
-        $user->setUpdatedAt($date);
-        $user->setCreatedAt($date);
+            $password = $this->passwordHasher->hashPassword($user, $data->password);
+
+            $user->setPassword($password);
+            $user->setName($data->name);
+            $user->setUpdatedAt($date);
+            $user->setCreatedAt($date);
+
+            $emailInNotUse = 0 === $this->_em->getRepository('App\Entity\User')->count(['email' => $data->email]);
+            if ($emailInNotUse){
+                $this->_em->persist($user);
+                $this->_em->flush();
+                return $user;
+            } else {
+                return null;
+            }
+        }catch (\Exception){
+            throw new Exception('Something went wrong');
+        }
 
 
-        $this->_em->persist($user);
-        $this->_em->flush();
-
-        return $user;
     }
 
     // /**

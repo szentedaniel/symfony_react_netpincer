@@ -2,5 +2,14 @@
   "build/app.css": "/build/app.css",
   "build/app.js": "/build/app.js",
   "build/runtime.js": "/build/runtime.js",
-  "build/vendors-node_modules_iconify_icons-ant-design_android-filled_js-node_modules_iconify_icons-an-b10012.js": "/build/vendors-node_modules_iconify_icons-ant-design_android-filled_js-node_modules_iconify_icons-an-b10012.js"
+  "build/node_modules_web-vitals_dist_web-vitals_js.js": "/build/node_modules_web-vitals_dist_web-vitals_js.js",
+  "build/vendors-node_modules_date-io_date-fns_build_index_esm_js-node_modules_mui_lab_LocalizationPro-ee465a.js": "/build/vendors-node_modules_date-io_date-fns_build_index_esm_js-node_modules_mui_lab_LocalizationPro-ee465a.js",
+  "build/vendors-node_modules_date-io_date-fns_build_index_esm_js-node_modules_mui_lab_LocalizationPro-358a7c.js": "/build/vendors-node_modules_date-io_date-fns_build_index_esm_js-node_modules_mui_lab_LocalizationPro-358a7c.js",
+  "build/vendors-node_modules_date-io_date-fns_build_index_esm_js-node_modules_mui_lab_LocalizationPro-05b816.js": "/build/vendors-node_modules_date-io_date-fns_build_index_esm_js-node_modules_mui_lab_LocalizationPro-05b816.js",
+  "build/assets_src_app_main_example_Example_js.js": "/build/assets_src_app_main_example_Example_js.js",
+  "build/vendors-node_modules_date-io_date-fns_build_index_esm_js-node_modules_mui_lab_LocalizationPro-d549f7.js": "/build/vendors-node_modules_date-io_date-fns_build_index_esm_js-node_modules_mui_lab_LocalizationPro-d549f7.js",
+  "build/vendors-node_modules_mui_material_AppBar_AppBar_js-node_modules_mui_material_Avatar_Avatar_js-8cc0a1.js": "/build/vendors-node_modules_mui_material_AppBar_AppBar_js-node_modules_mui_material_Avatar_Avatar_js-8cc0a1.js",
+  "build/vendors-node_modules_mui_material_AppBar_AppBar_js-node_modules_mui_material_Avatar_Avatar_js-b7fe8b.js": "/build/vendors-node_modules_mui_material_AppBar_AppBar_js-node_modules_mui_material_Avatar_Avatar_js-b7fe8b.js",
+  "build/vendors-node_modules_mui_base_ClickAwayListener_ClickAwayListener_js-node_modules_mui_lab_Loa-c4e747.js": "/build/vendors-node_modules_mui_base_ClickAwayListener_ClickAwayListener_js-node_modules_mui_lab_Loa-c4e747.js",
+  "build/vendors-node_modules_axios_index_js-node_modules_react-dom_index_js-node_modules_react-router-a014c7.js": "/build/vendors-node_modules_axios_index_js-node_modules_react-dom_index_js-node_modules_react-router-a014c7.js"
 }

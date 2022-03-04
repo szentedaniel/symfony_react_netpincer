@@ -7,26 +7,26 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * EtteremNyelv
  *
- * @ORM\Table(name="etterem_nyelv")
+ * @ORM\Table(name="etterem_nyelv", indexes={@ORM\Index(name="etterem_nyelv_ettermek_id_fk", columns={"etterem_id"})})
  * @ORM\Entity
  */
 class EtteremNyelv
 {
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="kod", type="string", length=2, nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $kod;
+    private $id;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="etterem_id", type="integer", nullable=false)
+     * @ORM\Column(name="kod", type="string", length=2, nullable=false)
      */
-    private $etteremId;
+    private $kod;
 
     /**
      * @var string
@@ -35,19 +35,29 @@ class EtteremNyelv
      */
     private $nyelv;
 
+    /**
+     * @var \Ettermek
+     *
+     * @ORM\ManyToOne(targetEntity="Ettermek")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="etterem_id", referencedColumnName="id")
+     * })
+     */
+    private $etterem;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getKod(): ?string
     {
         return $this->kod;
     }
 
-    public function getEtteremId(): ?int
+    public function setKod(string $kod): self
     {
-        return $this->etteremId;
-    }
-
-    public function setEtteremId(int $etteremId): self
-    {
-        $this->etteremId = $etteremId;
+        $this->kod = $kod;
 
         return $this;
     }
@@ -60,6 +70,18 @@ class EtteremNyelv
     public function setNyelv(string $nyelv): self
     {
         $this->nyelv = $nyelv;
+
+        return $this;
+    }
+
+    public function getEtterem(): ?Ettermek
+    {
+        return $this->etterem;
+    }
+
+    public function setEtterem(?Ettermek $etterem): self
+    {
+        $this->etterem = $etterem;
 
         return $this;
     }

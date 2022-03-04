@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +30,21 @@ class EtteremTipusok
      */
     private $tipus;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Ettermek", mappedBy="tipus")
+     */
+    private $etterem;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->etterem = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,5 +62,31 @@ class EtteremTipusok
         return $this;
     }
 
+    /**
+     * @return Collection|Ettermek[]
+     */
+    public function getEtterem(): Collection
+    {
+        return $this->etterem;
+    }
+
+    public function addEtterem(Ettermek $etterem): self
+    {
+        if (!$this->etterem->contains($etterem)) {
+            $this->etterem[] = $etterem;
+            $etterem->addTipu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEtterem(Ettermek $etterem): self
+    {
+        if ($this->etterem->removeElement($etterem)) {
+            $etterem->removeTipu($this);
+        }
+
+        return $this;
+    }
 
 }

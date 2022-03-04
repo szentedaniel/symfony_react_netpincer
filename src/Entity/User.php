@@ -29,11 +29,11 @@ class User
     private $email;
 
     /**
-     * @var array
+     * @var string
      *
-     * @ORM\Column(name="roles", type="json", nullable=false)
+     * @ORM\Column(name="roles", type="string", length=20, nullable=false, options={"default"="user"})
      */
-    private $roles;
+    private $roles = 'user';
 
     /**
      * @var string
@@ -97,12 +97,12 @@ class User
         return $this;
     }
 
-    public function getRoles(): ?array
+    public function getRoles(): ?string
     {
         return $this->roles;
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(string $roles): self
     {
         $this->roles = $roles;
 

@@ -29,17 +29,31 @@ class AuthController extends AbstractController
     {
         $jsonData = json_decode($request->getContent());
 
-        $user = $this->userRepository->create($jsonData);
+        try {
+            $user = $this->userRepository->create($jsonData);
+        }catch (\Exception $e){
+            return new JsonResponse([
+                'status' => '500',
+                'message' => $e->getMessage()
+            ]);
+        }
+        if ($user === null){
+            return new JsonResponse([
+                'status' => '1000'
+            ]);
+        }else {
+            return new JsonResponse([
+                'message' => 'success',
+                'user' => [
+                    'name' => $user->getName(),
+                    'email' => $user->getEmail(),
+                    'roles' => $user->getRoles(),
+                    'updated_at' => $user->getUpdatedAt(),
+                    'created_at' => $user->getUpdatedAt()
+                ],
+            ]);
 
-        return new JsonResponse([
-            'message' => 'success',
-            'user' => [
-                'name' => $user->getName(),
-                'email' => $user->getEmail(),
-                'roles' => $user->getRoles(),
-                'updated_at' => $user->getUpdatedAt(),
-                'created_at' => $user->getUpdatedAt()
-            ],
-        ]);
+        }
+
     }
 }

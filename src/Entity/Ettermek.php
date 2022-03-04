@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -107,6 +109,53 @@ class Ettermek
      * })
      */
     private $city;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Kategoriak", inversedBy="etterem")
+     * @ORM\JoinTable(name="etterem_kategoria_rend",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="etterem_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="kategoria_id", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $kategoria;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Konyhatipusok", mappedBy="etterem")
+     */
+    private $konyhaTipus;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="EtteremTipusok", inversedBy="etterem")
+     * @ORM\JoinTable(name="etterem_tipus_rend",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="etterem_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="tipus_id", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $tipus;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->kategoria = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->konyhaTipus = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tipus = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -257,5 +306,79 @@ class Ettermek
         return $this;
     }
 
+    /**
+     * @return Collection|Kategoriak[]
+     */
+    public function getKategoria(): Collection
+    {
+        return $this->kategoria;
+    }
+
+    public function addKategorium(Kategoriak $kategorium): self
+    {
+        if (!$this->kategoria->contains($kategorium)) {
+            $this->kategoria[] = $kategorium;
+        }
+
+        return $this;
+    }
+
+    public function removeKategorium(Kategoriak $kategorium): self
+    {
+        $this->kategoria->removeElement($kategorium);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Konyhatipusok[]
+     */
+    public function getKonyhaTipus(): Collection
+    {
+        return $this->konyhaTipus;
+    }
+
+    public function addKonyhaTipu(Konyhatipusok $konyhaTipu): self
+    {
+        if (!$this->konyhaTipus->contains($konyhaTipu)) {
+            $this->konyhaTipus[] = $konyhaTipu;
+            $konyhaTipu->addEtterem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeKonyhaTipu(Konyhatipusok $konyhaTipu): self
+    {
+        if ($this->konyhaTipus->removeElement($konyhaTipu)) {
+            $konyhaTipu->removeEtterem($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EtteremTipusok[]
+     */
+    public function getTipus(): Collection
+    {
+        return $this->tipus;
+    }
+
+    public function addTipu(EtteremTipusok $tipu): self
+    {
+        if (!$this->tipus->contains($tipu)) {
+            $this->tipus[] = $tipu;
+        }
+
+        return $this;
+    }
+
+    public function removeTipu(EtteremTipusok $tipu): self
+    {
+        $this->tipus->removeElement($tipu);
+
+        return $this;
+    }
 
 }

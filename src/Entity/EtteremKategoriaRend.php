@@ -12,14 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class EtteremKategoriaRend
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
 
     /**
      * @var \Ettermek
@@ -41,10 +33,6 @@ class EtteremKategoriaRend
      */
     private $kategoria;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getEtterem(): ?Ettermek
     {
