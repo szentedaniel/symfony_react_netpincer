@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -54,7 +56,7 @@ class Termekek
      *
      * @ORM\Column(name="elerheto", type="integer", nullable=false)
      */
-    private $elerheto;
+    private $elerheto = '0';
 
     /**
      * @var \Ettermek
@@ -75,6 +77,21 @@ class Termekek
      * })
      */
     private $kategoria;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Allergenek", mappedBy="termek")
+     */
+    private $allergen;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->allergen = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -165,5 +182,31 @@ class Termekek
         return $this;
     }
 
+    /**
+     * @return Collection|Allergenek[]
+     */
+    public function getAllergen(): Collection
+    {
+        return $this->allergen;
+    }
+
+    public function addAllergen(Allergenek $allergen): self
+    {
+        if (!$this->allergen->contains($allergen)) {
+            $this->allergen[] = $allergen;
+            $allergen->addTermek($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAllergen(Allergenek $allergen): self
+    {
+        if ($this->allergen->removeElement($allergen)) {
+            $allergen->removeTermek($this);
+        }
+
+        return $this;
+    }
 
 }

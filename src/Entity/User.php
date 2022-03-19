@@ -9,8 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQ_8D93D649E7927C74", columns={"email"})}, indexes={@ORM\Index(name="FK_user_etteremId_ettermek", columns={"etterem_id"})})
  * @ORM\Entity
+ * @method string getUserIdentifier()
  */
-class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
+class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface, \Symfony\Component\Security\Core\User\UserInterface
 {
     /**
      * @var int
@@ -29,11 +30,11 @@ class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticate
     private $email;
 
     /**
-     * @var array
+     * @var string
      *
-     * @ORM\Column(name="roles", type="json", nullable=false)
+     * @ORM\Column(name="roles", type="string", length=20, nullable=false, options={"default"="user"})
      */
-    private $roles;
+    private $roles = 'user';
 
     /**
      * @var string
@@ -71,6 +72,13 @@ class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticate
     private $createdAt = 'CURRENT_TIMESTAMP';
 
     /**
+     * @var array|null
+     *
+     * @ORM\Column(name="settings", type="json", nullable=true)
+     */
+    private $settings;
+
+    /**
      * @var \Ettermek
      *
      * @ORM\ManyToOne(targetEntity="Ettermek")
@@ -97,12 +105,12 @@ class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticate
         return $this;
     }
 
-    public function getRoles(): ?array
+    public function getRoles(): ?string
     {
         return $this->roles;
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(string $roles): self
     {
         $this->roles = $roles;
 
@@ -169,7 +177,19 @@ class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticate
         return $this;
     }
 
-    public function getEtterem(): ?Ettermek
+    public function getSettings(): ?array
+    {
+        return $this->settings;
+    }
+
+    public function setSettings(?array $settings): self
+    {
+        $this->settings = $settings;
+
+        return $this;
+    }
+
+    public function getEtterem(): \Ettermek
     {
         return $this->etterem;
     }
@@ -182,4 +202,23 @@ class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticate
     }
 
 
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+    }
+
+    public function __call(string $name, array $arguments)
+    {
+        // TODO: Implement @method string getUserIdentifier()
+    }
 }

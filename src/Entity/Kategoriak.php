@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Kategoriak
  *
- * @ORM\Table(name="kategoriak")
+ * @ORM\Table(name="kategoriak", indexes={@ORM\Index(name="asd_idx", columns={"parent_id"})})
  * @ORM\Entity
  */
 class Kategoriak
@@ -29,11 +31,29 @@ class Kategoriak
     private $kategoria;
 
     /**
-     * @var int|null
+     * @var \Kategoriak
      *
-     * @ORM\Column(name="parent_id", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Kategoriak")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * })
      */
-    private $parentId;
+    private $parent;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Ettermek", mappedBy="kategoria")
+     */
+    private $etterem;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->etterem = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,17 +72,43 @@ class Kategoriak
         return $this;
     }
 
-    public function getParentId(): ?int
+    public function getParent(): ?self
     {
-        return $this->parentId;
+        return $this->parent;
     }
 
-    public function setParentId(?int $parentId): self
+    public function setParent(?self $parent): self
     {
-        $this->parentId = $parentId;
+        $this->parent = $parent;
 
         return $this;
     }
 
+    /**
+     * @return Collection|Ettermek[]
+     */
+    public function getEtterem(): Collection
+    {
+        return $this->etterem;
+    }
+
+    public function addEtterem(Ettermek $etterem): self
+    {
+        if (!$this->etterem->contains($etterem)) {
+            $this->etterem[] = $etterem;
+            $etterem->addKategorium($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEtterem(Ettermek $etterem): self
+    {
+        if ($this->etterem->removeElement($etterem)) {
+            $etterem->removeKategorium($this);
+        }
+
+        return $this;
+    }
 
 }
